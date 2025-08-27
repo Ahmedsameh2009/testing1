@@ -1,0 +1,1876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEX SITE - Operations & Asset Health Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body class="bg-gray-50 text-gray-800" data-theme="light">
+    <!-- Enhanced Motion background with multiple layers -->
+    <div class="motion-background">
+        <div class="layer layer-1"></div>
+        <div class="layer layer-2"></div>
+        <div class="layer layer-3"></div>
+        <div class="layer layer-4"></div>
+        <div class="particles">
+            <div class="particle" style="width: 20px; height: 20px; top: 20%; left: 10%;"></div>
+            <div class="particle" style="width: 15px; height: 15px; top: 60%; left: 80%;"></div>
+            <div class="particle" style="width: 25px; height: 25px; top: 80%; left: 30%;"></div>
+            <div class="particle" style="width: 18px; height: 18px; top: 40%; left: 60%;"></div>
+            <div class="particle" style="width: 12px; height: 12px; top: 70%; left: 20%;"></div>
+        </div>
+    </div>
+
+    <!-- Geometric shapes -->
+    <div class="geometric-shapes">
+        <div class="floating-geometric"></div>
+        <div class="floating-geometric"></div>
+        <div class="floating-geometric"></div>
+        <div class="floating-geometric"></div>
+        <div class="animated-line"></div>
+        <div class="animated-line"></div>
+        <div class="animated-line"></div>
+        <div class="animated-line"></div>
+        <div class="animated-line"></div>
+        <div class="animated-line"></div>
+    </div>
+
+    <!-- Custom cursor -->
+
+    <div class="main">
+        
+        <header class="mb-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <img src="assets/solintec-logo1.png" alt="SOULINTEC Logo" class="h-12 w-auto">
+            <div class="text-center md:text-left flex-grow">
+                <h1 class="text-2xl md:text-3xl font-bold text-gray-900">MEX SITE - Operations & Asset Health</h1>
+                <p class="text-gray-600">Real-time maintenance and failure repair overview.</p>
+            </div>
+            <div class="flex flex-wrap justify-center items-center gap-2">
+                <div class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-md border">
+                    <label for="running-hours" class="text-sm font-medium text-gray-700">Daily Hours:</label>
+                    <input type="number" id="running-hours" value="12" min="1" max="24" class="w-16 text-center font-bold border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="theme-toggle-container flex items-center gap-3">
+                    <svg id="moon-icon" class="w-4 h-4 text-gray-600 transition-all duration-200 hover:text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                    </svg>
+                    <div id="theme-toggle" class="theme-toggle" role="switch" aria-label="Toggle dark mode" tabindex="0">
+                        <div class="theme-toggle-slider"></div>
+                    </div>
+                    <svg id="sun-icon" class="w-4 h-4 text-yellow-500 transition-all duration-200 hover:text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </div>
+                <button id="manage-pm-btn" class="btn primary">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    Manage PMs
+                </button>
+                <button id="reset-data-btn" class="btn">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                    Reset Data
+                </button>
+                <button id="import-csv-btn" class="btn">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"/>
+                    </svg>
+                    Import CSV
+                </button>
+                <input type="file" id="csv-file-input" class="hidden" accept=".csv">
+                <button id="export-csv-btn" class="btn">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                    </svg>
+                    Export CSV
+                </button>
+                <button id="generate-report-btn" class="btn">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <line x1="18" y1="20" x2="18" y2="10"></line>
+                        <line x1="12" y1="20" x2="12" y2="4"></line>
+                        <line x1="6" y1="20" x2="6" y2="14"></line>
+                    </svg>
+                    Generate Report
+                </button>
+            </div>
+        </header>
+
+        <nav class="bg-white rounded-lg shadow-md p-2 mb-6 flex flex-wrap justify-center gap-2 text-sm" role="navigation" aria-label="Main sections">
+            <button class="nav-btn active" data-target="overview" role="tab" aria-selected="true">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                Overview
+            </button>
+            <button class="nav-btn" data-target="automated-warehouse" role="tab" aria-selected="false">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                </svg>
+                Warehouse
+            </button>
+            <button class="nav-btn" data-target="blending" role="tab" aria-selected="false">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+                Blending (ABB/ILB)
+            </button>
+            <button class="nav-btn" data-target="filling-lines" role="tab" aria-selected="false">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+                </svg>
+                Filling Piggable Lines
+            </button>
+            <button class="nav-btn" data-target="bulk-lines" role="tab" aria-selected="false">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10"/>
+                </svg>
+                Bulk Piggable Line
+            </button>
+            <button class="nav-btn" data-target="atg" role="tab" aria-selected="false">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
+                </svg>
+                ATG System
+            </button>
+            <button class="nav-btn" data-target="ilgmu" role="tab" aria-selected="false">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                </svg>
+                ILGMU System
+            </button>
+            <button class="nav-btn" data-target="cgu" role="tab" aria-selected="false">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                </svg>
+                CGU Section
+            </button>
+        </nav>
+
+        <main id="dashboard-content">
+            <section id="overview" class="dashboard-section space-y-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 fade-in">
+                    <div class="kpi-card bg-white p-6 rounded-xl shadow-md text-center relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-16 h-16 bg-blue-100 rounded-full -mr-8 -mt-8 opacity-20"></div>
+                        <div class="relative z-10">
+                            <div class="flex items-center justify-center mb-2">
+                                <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                                </svg>
+                                <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wide">OEE</h3>
+                    </div>
+                            <p id="kpi-oee" class="text-4xl font-bold text-blue-600 mt-2 transition-all duration-500">--%</p>
+                            <p class="text-xs text-gray-500 mt-1">Overall Equipment Effectiveness</p>
+                </div>
+                    </div>
+                    <div class="kpi-card bg-white p-6 rounded-xl shadow-md text-center relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-16 h-16 bg-red-100 rounded-full -mr-8 -mt-8 opacity-20"></div>
+                        <div class="relative z-10">
+                            <div class="flex items-center justify-center mb-2">
+                                <svg class="w-6 h-6 mr-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                </svg>
+                                <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wide">Critical WOs</h3>
+                            </div>
+                            <p id="critical-wo-kpi" class="text-4xl font-bold text-red-500 mt-2 transition-all duration-500 pulse-animation">0</p>
+                            <p class="text-xs text-gray-500 mt-1">Active Critical Work Orders</p>
+                        </div>
+                    </div>
+                    <div class="kpi-card bg-white p-6 rounded-xl shadow-md text-center relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-16 h-16 bg-green-100 rounded-full -mr-8 -mt-8 opacity-20"></div>
+                        <div class="relative z-10">
+                            <div class="flex items-center justify-center mb-2">
+                                <svg class="w-6 h-6 mr-2 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wide">PM Compliance</h3>
+                            </div>
+                            <p id="kpi-pm" class="text-4xl font-bold text-green-500 mt-2 transition-all duration-500">--%</p>
+                            <p class="text-xs text-gray-500 mt-1">Preventive Maintenance</p>
+                        </div>
+                    </div>
+                    <div class="kpi-card bg-white p-6 rounded-xl shadow-md text-center relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-16 h-16 bg-yellow-100 rounded-full -mr-8 -mt-8 opacity-20"></div>
+                        <div class="relative z-10">
+                            <div class="flex items-center justify-center mb-2">
+                                <svg class="w-6 h-6 mr-2 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                                </svg>
+                                <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wide">Safety Record</h3>
+                            </div>
+                            <p id="kpi-lti" class="text-4xl font-bold text-yellow-500 mt-2 transition-all duration-500">254</p>
+                            <p class="text-xs text-gray-500 mt-1">Days Since Last Incident</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-semibold flex items-center">
+                                <svg class="w-5 h-5 mr-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                </svg>
+                                Live Critical Work Orders
+                            </h3>
+                            <span id="critical-wo-count" class="bg-red-100 text-red-800 text-xs font-bold px-2.5 py-0.5 rounded-full">0</span>
+                        </div>
+                        <div class="overflow-x-auto max-h-96">
+                            <table class="w-full text-left">
+                                <thead class="bg-gray-100 sticky top-0">
+                                    <tr>
+                                        <th class="p-3 text-xs">WO#</th>
+                                        <th class="p-3 text-xs">Priority</th>
+                                        <th class="p-3 text-xs">Equipment</th>
+                                        <th class="p-3 text-xs">Section</th>
+                                        <th class="p-3 text-xs">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="critical-wo-table"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white p-6 rounded-xl shadow-md">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-semibold flex items-center">
+                                <svg class="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <line x1="18" y1="20" x2="18" y2="10"></line>
+                                    <line x1="12" y1="20" x2="12" y2="4"></line>
+                                    <line x1="6" y1="20" x2="6" y2="14"></line>
+                                </svg>
+                                Performance Trends
+                            </h3>
+                            <button id="refresh-analytics" class="btn">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                </svg>
+                                Refresh
+                            </button>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center p-3 bg-blue-50 rounded-lg">
+                                <div>
+                                    <p class="text-sm font-medium text-blue-900">MTTR</p>
+                                    <p class="text-xs text-blue-700">Mean Time To Repair</p>
+                                </div>
+                                <p id="mttr-display" class="text-lg font-bold text-blue-600">-- min</p>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-green-50 rounded-lg">
+                                <div>
+                                    <p class="text-sm font-medium text-green-900">MTBF</p>
+                                    <p class="text-xs text-green-700">Mean Time Between Failures</p>
+                                </div>
+                                <p id="mtbf-display" class="text-lg font-bold text-green-600">-- min</p>
+                            </div>
+                            <div class="flex justify-between items-center p-3 bg-purple-50 rounded-lg">
+                                <div>
+                                    <p class="text-sm font-medium text-purple-900">Completion Rate</p>
+                                    <p class="text-xs text-purple-700">Work Order Success</p>
+                                </div>
+                                <p id="completion-rate-display" class="text-lg font-bold text-purple-600">--%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-semibold flex items-center">
+                            <svg class="w-5 h-5 mr-2 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            Work Order History & Timeline
+                        </h3>
+                        <div class="flex items-center gap-2">
+                            <select id="history-status-filter" class="text-sm border border-gray-300 rounded-md px-2 py-1">
+                                <option value="all">All Status</option>
+                                <option value="New">New</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Done">Done</option>
+                                <option value="deleted">Deleted</option>
+                            </select>
+                            <select id="history-section-filter" class="text-sm border border-gray-300 rounded-md px-2 py-1">
+                                <option value="all">All Sections</option>
+                                <option value="automated-warehouse">Warehouse</option>
+                                <option value="blending">Blending</option>
+                                <option value="filling-lines">Filling Lines</option>
+                                <option value="bulk-lines">Bulk Lines</option>
+                                <option value="atg">ATG System</option>
+                                <option value="ilgmu">ILGMU System</option>
+                                <option value="cgu">CGU Section</option>
+                            </select>
+                            <input type="date" id="history-date-from" class="text-sm border border-gray-300 rounded-md px-2 py-1" title="From Date">
+                            <input type="date" id="history-date-to" class="text-sm border border-gray-300 rounded-md px-2 py-1" title="To Date">
+                            <button id="export-history" class="btn">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                                </svg>
+                                Export
+                            </button>
+                        </div>
+                    </div>
+                    <div id="wo-history-timeline" class="space-y-3 max-h-96 overflow-y-auto">
+                        <div class="text-center text-gray-500 py-8">
+                            <svg class="w-12 h-12 mx-auto mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                            <p>No work order history to display</p>
+                            <p class="text-sm mt-1">Create work orders to see them tracked here</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="component-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeComponentModal()">&times;</span>
+            <h2 id="modal-title" class="text-2xl font-bold mb-4">Components</h2>
+            <div id="modal-component-list" class="space-y-3 max-h-96 overflow-y-auto"></div>
+        </div>
+    </div>
+
+    <div id="edit-components-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeEditModal()">&times;</span>
+            <h2 id="edit-modal-title" class="text-2xl font-bold mb-4">Edit Components</h2>
+            <div id="edit-modal-list" class="space-y-2 mb-4 max-h-80 overflow-y-auto"></div>
+            <div class="flex gap-2">
+                <input type="text" id="new-component-name" placeholder="New component name" class="flex-grow w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                <button id="add-component-btn" class="bg-blue-600 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700">Add</button>
+            </div>
+            <button id="save-components-btn" class="w-full bg-green-600 text-white font-bold py-2 px-4 rounded-md hover:bg-green-700 mt-4">Save Changes</button>
+        </div>
+    </div>
+
+    <div id="pm-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closePmModal()">&times;</span>
+            <h2 class="text-2xl font-bold mb-4">Preventive Maintenance Schedule</h2>
+            <div id="pm-task-list" class="space-y-3 mb-4 max-h-80 overflow-y-auto"></div>
+            <button id="save-pm-btn" class="w-full bg-green-600 text-white font-bold py-2 px-4 rounded-md hover:bg-green-700 mt-4">Save Changes</button>
+        </div>
+    </div>
+
+    <script>
+        // Helper function to create section HTML templates
+        function createSectionHTML(sectionKey, title) {
+            const container = document.getElementById('dashboard-content');
+            const html = `
+                <section id="${sectionKey}" class="dashboard-section space-y-6 hidden">
+                    <h2 class="text-2xl font-bold text-gray-900">${title}</h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            <h3 class="text-xl font-semibold mb-4">Subsection Availability</h3>
+                            <div id="${sectionKey}-availability-grid" class="space-y-3"></div>
+                        </div>
+                        <div class="bg-white p-6 rounded-lg shadow-md">
+                            <h3 class="text-xl font-semibold mb-4">Log New Work Order</h3>
+                            <form id="${sectionKey}-form" class="space-y-4">
+                                <div>
+                                    <label for="${sectionKey}-eq" class="block text-sm font-medium text-gray-700">Faulted Equipment</label>
+                                    <select id="${sectionKey}-eq" required class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                                        <option value="">Select a component...</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="${sectionKey}-desc" class="block text-sm font-medium text-gray-700">Description</label>
+                                    <textarea id="${sectionKey}-desc" rows="3" required class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm"></textarea>
+                                </div>
+                                <div>
+                                    <label for="${sectionKey}-priority" class="block text-sm font-medium text-gray-700">Priority</label>
+                                    <select id="${sectionKey}-priority" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm">
+                                        <option>Medium</option><option>High</option><option>Emergency</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-md hover:bg-blue-700">Submit Work Order</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-semibold mb-4">Active Work Orders</h3>
+                        <div class="overflow-x-auto"><table class="w-full text-left" id="${sectionKey}-wo-table"></table></div>
+                    </div>
+                </section>
+            `;
+            container.insertAdjacentHTML('beforeend', html);
+        }
+
+        document.addEventListener('DOMContentLoaded', function main() {
+
+            // #region DATA STORE
+            const OEE_PERFORMANCE = 0.95;
+            const OEE_QUALITY = 0.99;
+            let currentView = 'overview';
+            let dailyRunningMinutes = 720;
+
+            function getDefaultPMs() {
+                return [
+                    { sectionKey: 'automated-warehouse', equipment: 'Elevator B1', description: 'Weekly Lubrication and Inspection', status: 'Done' },
+                    { sectionKey: 'automated-warehouse', equipment: 'Stretch Wrapping M/C 1', description: 'Monthly Sensor Cleaning', status: 'Done' },
+                    { sectionKey: 'blending', equipment: 'Blending Vessel V-401', description: 'Quarterly Seal Check', status: 'Done' },
+                    { sectionKey: 'blending', equipment: 'In-Line Blender (ILB)', description: 'Bi-Weekly Filter Replacement', status: 'Done' },
+                    { sectionKey: 'filling-lines', equipment: '1 Liter M/C Line HLDV1', description: 'Monthly Valve Actuator Test', status: 'Done' },
+                    { sectionKey: 'bulk-lines', equipment: 'C1 Line HLDV2', description: 'Monthly Valve Actuator Test', status: 'Done' },
+                ];
+            }
+
+            const plantStructure = {
+                'automated-warehouse': { name: 'Warehouse', subsections: { 'Servers & Workstations': ['Server', 'Backup Server', 'Engineering Station', '1L M/C Filling WS', '4L M/C Filling WS', '20L M/C Filling WS', 'Manual Input WS', 'Loading WS'], 'Conveyor A': ['Input Conveyor A', ...Array.from({ length: 11 }, (_, i) => `Conveyor A${i + 1}`)], 'Elevator B1': ['Elevator B1'], 'Conveyor C': ['Distribution Conveyor C', ...Array.from({ length: 7 }, (_, i) => `Conveyor C${i + 1}`)], 'STK1': ['Input Conveyor E1-E2', 'Output Conveyor E3-E4'], 'STK2': ['Input Conveyor D1-D2', 'Output Conveyor D3-D4'], 'Shuttle Car F1': ['Shuttle Car Conveyor F1'], 'Kirby Conveyor K': ['Kirby Conveyor', ...Array.from({ length: 11 }, (_, i) => `Conveyor K${i + 1}`)], 'Output Systems': ['Direct Output Conveyor', 'Stretch Wrapping M/C 1', 'Stretch Wrapping M/C 2', 'Stretch Wrapping M/C 3'] }},
+                'blending': { name: 'Blending (ABB/ILB)', subsections: { 'Servers & ES': ['Server', 'Backup Server', 'Engineering Station', 'ABB Control System'], 'Blending Vessel V-401': ['Blending Vessel V-401', ...Array.from({length: 18}, (_, i) => `Flow Control Valve 2${(i+1).toString().padStart(2,'0')}`), 'Temperature Transmitter 201'], 'Dosing Vessel V-402': ['Dosing Vessel V-402', ...Array.from({length: 28}, (_, i) => `Flow Control Valve 3${(i+1).toString().padStart(2,'0')}`), 'Temperature Transmitter 310'], 'Piggable Manifold': ['High Level Diverter Valve (HLVD)', ...Array.from({length: 11}, (_, i) => `K${i+1} In-Line Diverter Valve (ILDV)`), 'K12 High Level Diverter Valve (HLDV)'], 'Meters': ['Mobil 1 Meter', 'Batch Blending Meter', 'In-Tank Meter'], 'ILB Skids': ['In-Line Blender (ILB)', 'POV 101A/B/C/D', 'Temperature Transmitter 101', 'Flow Transmitter 101', 'Flow Control Valve 101', 'POV 102A/B/C/D', 'Temperature Transmitter 102', 'Flow Transmitter 102', 'Flow Control Valve 102', 'POV 103A/B/C/D', 'Temperature Transmitter 103', 'Flow Transmitter 103', 'Flow Control Valve 103', 'POV 104A/B/C/D', 'Temperature Transmitter 104', 'Flow Transmitter 104', 'Flow Control Valve 104', 'POV 105A/B/C', 'Temperature Transmitter 105', 'Flow Transmitter 105', 'Flow Control Valve 105', 'POV 106A', 'Flow Transmitter 106', 'Flow Control Valve 106', 'POV 107A', 'Flow Transmitter 107', 'Flow Control Valve 107'] }},
+                'filling-lines': { name: 'Filling Piggable Lines', subsections: { '1 Liter M/C Line': ['HLDV1', 'HLDV2'], '4 Liter M/C Line': ['HLDV1', 'HLDV2'], '20 Liter M/C Line': ['HLDV1', 'HLDV2'], 'Old Drum M/C Line': ['HLDV1', 'HLDV2'], 'New Drum M/C Line': ['HLDV1', 'HLDV2'], 'Mobil1 Line': ['HLDV1', 'HLDV2'] }},
+                'bulk-lines': { name: 'Bulk Piggable Line', subsections: { 'C1 Line': ['HLDV1', 'HLDV2'], 'C2 Line': ['HLDV1', 'HLDV2'], 'C4 Line': ['HLDV1', 'HLDV2'], 'C5 Line': ['HLDV1', 'HLDV2'], 'C6 Line': ['HLDV1', 'HLDV2'], 'C7 Line': ['HLDV1', 'HLDV2'] }},
+                'atg': { name: 'ATG System', subsections: { 'ATG Server': ['ATG Server'], 'Tanks': ['ATG Tank-1', 'ATG Tank-2', ...Array.from({ length: 20 }, (_, i) => `ATG Tank-${i+21}`)] } },
+                'ilgmu': { name: 'ILGMU System', subsections: { 'Servers & ES': ['ILGMU Server', 'ILGMU ES', 'ILGMU Skid'], 'LOOP 1': ['Flow Transmitter 5101','Pressure Indicator 5101','Flow Transmitter 5102','Pressure Indicator 5102','Flow Transmitter 5103A/B/C','Flow Control Valve 5103A/B/C','Pressure Indicator 5103A/B/C','VFD-G60','VFD-G62','Solenoid Valve 5105','Solenoid Valve 5106','Motor 5110','Exchanger 5101','Pressure Differential Indicator 5104','Temperature Valve 5103','Pressure Indicator 5104A/B','Temperature Transmitter 5103'], 'Reactor Section': ['Agitator G-5101','Pressure Indicator 5105','Temperature Transmitter 5101','Temperature Valve 5101','Pressure Transmitter 5106','Pressure Indicator 5106','Pressure Valve 5106','Exchanger 5102','Temperature Valve 5201','Temperature Transmitter 5201','Pressure Differential Indicator 5201','Pressure Indicator 5201A/B','Pressure Transmitter 5209','Pressure Indicator 5209','Pressure Valve 5209'], 'Flash Chamber': ['Agitator G-5102','Motor 5102','Pressure Indicator 5209','Pressure Transmitter 5204','Pressure Indicator 5204','Pressure Valve 5204','Level Transmitter 5201','Pressure Valve 5203','Pressure Transmitter 5203','Pressure Indicator 5203','Temperature Transmitter 5202','Temperature Transmitter 5203','Flow Control Valve 5103','Solenoid Valve 5210','Pressure Indicator 5206','Pressure Indicator 5208'], 'LOOP 2 Section': ['Pressure Indicator 5203A/B/C', 'Flow Transmitter 5203A/B/C', 'Flow Control Valve 5203A/B/C', 'Pressure Indicator 5204', 'Flow Transmitter 5204', 'Flow Control Valve 5204', 'Pressure Indicator 5205', 'Flow Transmitter 5205', 'Flow Control Valve 5205', 'Pressure Indicator 5206', 'Flow Transmitter 5206', 'Flow Control Valve 5206', 'Pressure Indicator 5207', 'Flow Transmitter 5207', 'Flow Control Valve 5207', 'Solenoid Valve 5211'], 'Finish Section': ['Pressure Indicator 5301','Motor 5101','Pressure Transmitter 5303','Pressure Indicator 5303','Pressure Transmitter 5305','Pressure Indicator 5305','Pressure Valve 5305','VFD G-5104','Gate Valve 5302','Gate Valve 5304','Temperature Transmitter 5301','Pressure Indicator 5306','Exchanger 5104','Motor 5104','Temperature Valve 5401','Temperature Transmitter 5401','Pressure Differential Transmitter 5401','Pressure Indicator 5401A/B'] } },
+                'cgu': { name: 'CGU Section', subsections: { 'Server': ['Server'], 'Software': ['Software'] } }
+            };
+
+            let plantDataWithAvailability = {};
+            let mockData = {};
+            let woHistory = []; // Comprehensive work order history
+
+            function initializeAndResetData() {
+                plantDataWithAvailability = JSON.parse(JSON.stringify(plantStructure));
+                Object.keys(plantDataWithAvailability).forEach(key => {
+                    plantDataWithAvailability[key].allComponents = [];
+                    Object.keys(plantDataWithAvailability[key].subsections).forEach(subKey => {
+                        const components = plantDataWithAvailability[key].subsections[subKey];
+                        plantDataWithAvailability[key].subsections[subKey] = components.map(name => {
+                            let componentName = name;
+                            if (key === 'filling-lines' || key === 'bulk-lines') {
+                                componentName = `${subKey} ${name}`;
+                            }
+                            return { name: componentName, availability: 100.0 };
+                        });
+                        plantDataWithAvailability[key].allComponents.push(...plantDataWithAvailability[key].subsections[subKey]);
+                    });
+                });
+                
+                mockData = {
+                    workOrders: { 'automated-warehouse': [], 'blending': [], 'filling-lines': [], 'bulk-lines': [], 'atg': [], 'ilgmu': [], 'cgu': [] },
+                    workOrderCounters: { 'automated-warehouse': 1000000, 'blending': 2000000, 'filling-lines': 3000000, 'bulk-lines': 4000000, 'atg': 5000000, 'ilgmu': 6000000, 'cgu': 7000000 },
+                    scheduledPMs: getDefaultPMs()
+                };
+            }
+            // #endregion
+
+            let navButtons, componentModal, modalTitle, modalComponentList, editModal, editModalTitle, editModalList, newComponentName, addComponentBtn, saveComponentsBtn, pmModal, themeToggle, currentTheme = 'light';
+
+            // --- MODAL & VIEW FUNCTIONS ---
+            window.closeComponentModal = () => { if(componentModal) componentModal.style.display = 'none'; };
+            window.closeEditModal = () => { if(editModal) editModal.style.display = 'none'; };
+            window.closePmModal = () => { if(pmModal) pmModal.style.display = 'none'; };
+            
+            window.openPmModal = () => {
+                const taskList = document.getElementById('pm-task-list');
+                taskList.innerHTML = ''; // Clear previous list
+                mockData.scheduledPMs.forEach((pm, index) => {
+                    const sectionName = plantDataWithAvailability[pm.sectionKey]?.name || 'Unknown Section';
+                    const isChecked = pm.status === 'Done';
+                    const taskHtml = `
+                        <div class="p-2 border rounded-md flex items-center justify-between hover:bg-gray-100">
+                            <div>
+                                <div class="font-semibold text-gray-800">${pm.description}</div>
+                                <div class="text-sm text-gray-500">${sectionName} - ${pm.equipment}</div>
+                            </div>
+                            <input type="checkbox" data-pm-index="${index}" class="h-5 w-5 rounded text-blue-600 focus:ring-blue-500 border-gray-300" ${isChecked ? 'checked' : ''}>
+                        </div>
+                    `;
+                    taskList.insertAdjacentHTML('beforeend', taskHtml);
+                });
+                pmModal.style.display = 'block';
+            };
+
+            window.openComponentModal = (sectionKey, subsectionName) => {
+                const components = plantDataWithAvailability[sectionKey]?.subsections[subsectionName];
+                if (!components) return;
+                modalTitle.textContent = `${subsectionName} - Component Health`;
+                modalComponentList.innerHTML = components.map(c => {
+                    let barColor = 'bg-green-500';
+                    if (c.availability < 98 && c.availability >= 95) barColor = 'bg-yellow-400';
+                    else if (c.availability < 95) barColor = 'bg-red-500';
+                    return `<div class="p-2 border-b">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-medium text-gray-700">${c.name}</span>
+                            <span class="font-bold text-sm">${c.availability.toFixed(1)}%</span>
+                        </div>
+                        <div class="w-full availability-bar-bg rounded-full h-2"><div class="${barColor} h-2 rounded-full" style="width: ${c.availability}%"></div></div>
+                    </div>`;
+                }).join('');
+                componentModal.style.display = 'block';
+            };
+            
+            window.openEditModal = (sectionKey, subKey) => {
+                editModal.dataset.sectionKey = sectionKey;
+                editModal.dataset.subKey = subKey;
+                editModalTitle.textContent = `Edit Components for: ${subKey}`;
+                const components = plantDataWithAvailability[sectionKey].subsections[subKey];
+                editModalList.innerHTML = components.map(comp => `
+                    <div class="flex items-center gap-2">
+                        <input type="text" value="${comp.name}" class="edit-component-input flex-grow w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm">
+                        <button class="delete-component-btn bg-red-500 text-white font-bold py-2 px-3 rounded-md hover:bg-red-600">&times;</button>
+                    </div>
+                `).join('');
+                editModal.style.display = 'block';
+            };
+            
+            function switchView(targetId) {
+                currentView = targetId;
+                document.querySelectorAll('.dashboard-section').forEach(section => section.classList.add('hidden'));
+                const targetSection = document.getElementById(targetId);
+                if (targetSection) {
+                    targetSection.classList.remove('hidden');
+                    targetSection.classList.add('fade-in');
+                }
+                navButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    btn.setAttribute('aria-selected', 'false');
+                    if(btn.dataset.target === targetId) {
+                        btn.classList.add('active');
+                        btn.setAttribute('aria-selected', 'true');
+                    }
+                });
+            }
+
+            // Theme toggle functionality
+            function toggleTheme(e) {
+                if (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+                document.body.setAttribute('data-theme', currentTheme);
+                
+                // Save theme preference
+                localStorage.setItem('theme', currentTheme);
+                
+                // Update theme-dependent elements
+                updateThemeElements();
+            }
+
+            function updateThemeElements() {
+                const isDark = currentTheme === 'dark';
+                
+                // Update body classes for Tailwind compatibility
+                if (isDark) {
+                    document.body.classList.remove('bg-gray-50', 'text-gray-800');
+                    document.body.classList.add('bg-slate-900', 'text-slate-100');
+                } else {
+                    document.body.classList.remove('bg-slate-900', 'text-slate-100');
+                    document.body.classList.add('bg-gray-50', 'text-gray-800');
+                }
+            }
+
+            function initializeTheme() {
+                const savedTheme = localStorage.getItem('theme');
+                if (savedTheme) {
+                    currentTheme = savedTheme;
+                } else {
+                    // Check system preference
+                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        currentTheme = 'dark';
+                    } else {
+                        currentTheme = 'light';
+                    }
+                }
+                
+                document.body.setAttribute('data-theme', currentTheme);
+                updateThemeElements();
+                
+                // Set up theme toggle event listeners
+                const themeToggleContainer = document.querySelector('.theme-toggle-container');
+                if (themeToggleContainer) {
+                    themeToggleContainer.addEventListener('click', toggleTheme);
+                }
+                if (themeToggle) {
+                    themeToggle.addEventListener('click', toggleTheme);
+                    themeToggle.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            toggleTheme(e);
+                        }
+                    });
+                }
+                
+                // Watch for system theme changes
+                if (window.matchMedia) {
+                    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+                        if (!localStorage.getItem('theme')) {
+                            currentTheme = e.matches ? 'dark' : 'light';
+                            document.body.setAttribute('data-theme', currentTheme);
+                            updateThemeElements();
+                        }
+                    });
+                }
+            }
+
+            // --- DATA MUTATION & STATE MANAGEMENT ---
+            function savePmStatus() {
+                const checkboxes = document.querySelectorAll('#pm-task-list input[type="checkbox"]');
+                checkboxes.forEach(cb => {
+                    const index = parseInt(cb.dataset.pmIndex, 10);
+                    if (!isNaN(index) && mockData.scheduledPMs[index]) {
+                        mockData.scheduledPMs[index].status = cb.checked ? 'Done' : 'Pending';
+                    }
+                });
+                saveDataToLocalStorage();
+                refreshAllUI();
+                closePmModal();
+            }
+
+            function updateWorkOrderStatus(woId, newStatus, sectionKey) {
+                const wo = mockData.workOrders[sectionKey].find(w => w.wo === parseInt(woId));
+                if (!wo) return;
+                const oldStatus = wo.status;
+                wo.status = newStatus;
+                
+                if (newStatus === 'In Progress' && !wo.startTime) wo.startTime = new Date();
+                
+                if (newStatus === 'Done' && !wo.finishTime) {
+                    wo.finishTime = new Date();
+                    if (!wo.startTime) wo.startTime = new Date(Date.now() - 60 * 60 * 1000); 
+                }
+                 if (oldStatus === 'Done' && newStatus !== 'Done') {
+                    wo.finishTime = null;
+                }
+                
+                // Update work order history
+                updateWOHistory(woId, sectionKey, {
+                    status: newStatus,
+                    startTime: wo.startTime,
+                    finishTime: wo.finishTime
+                }, newStatus === 'Done' ? 'completed' : 'updated');
+                
+                // Add activity tracking
+                const sectionName = plantDataWithAvailability[sectionKey]?.name || 'Unknown';
+                addActivity('work-orders', `Work Order #${woId} status changed from ${oldStatus} to ${newStatus}`, {
+                    woId,
+                    equipment: wo.eq,
+                    section: sectionName,
+                    oldStatus,
+                    newStatus
+                });
+                
+                saveDataToLocalStorage();
+                refreshAllUI();
+            }
+
+            function updatePerformedWork(woId, sectionKey, text) {
+                const wo = mockData.workOrders[sectionKey].find(w => w.wo === parseInt(woId));
+                if (wo) {
+                    wo.performedWork = text;
+                    
+                    // Update work order history
+                    updateWOHistory(woId, sectionKey, {
+                        performedWork: text
+                    }, 'updated');
+                    
+                    saveDataToLocalStorage();
+                }
+            }
+
+            function handleFormSubmit(event, sectionKey) {
+                event.preventDefault();
+                const form = event.target;
+                const eq = form.querySelector(`#${sectionKey}-eq`).value;
+                const desc = form.querySelector(`#${sectionKey}-desc`).value;
+                const priority = form.querySelector(`#${sectionKey}-priority`).value;
+                if (!eq || !desc) return;
+                
+                const newWoNumber = mockData.workOrderCounters[sectionKey]++;
+                const newWO = { wo: newWoNumber, priority, eq, desc, status: 'In Progress', startTime: new Date(), performedWork: '' };
+                
+                mockData.workOrders[sectionKey].unshift(newWO);
+                
+                // Add to work order history
+                addToWOHistory(newWO, sectionKey, 'created');
+                
+                // Add activity tracking
+                const sectionName = plantDataWithAvailability[sectionKey]?.name || 'Unknown';
+                addActivity('work-orders', `New ${priority} priority work order #${newWoNumber} created for ${eq}`, {
+                    woId: newWoNumber,
+                    equipment: eq,
+                    section: sectionName,
+                    priority,
+                    description: desc
+                });
+                
+                saveDataToLocalStorage();
+                refreshAllUI();
+                form.reset();
+                
+                // Show success feedback
+                showNotification(`Work Order #${newWoNumber} created successfully!`, 'success');
+            }
+
+            function saveComponentChanges() {
+                const sectionKey = editModal.dataset.sectionKey;
+                const subKey = editModal.dataset.subKey;
+                if (!sectionKey || !subKey) return;
+
+                const inputs = editModalList.querySelectorAll('.edit-component-input');
+                const newComponentList = [];
+                inputs.forEach(input => {
+                    if (input.value.trim() !== '') {
+                        const existingComp = plantDataWithAvailability[sectionKey].subsections[subKey].find(c => c.name === input.value);
+                        newComponentList.push(existingComp || { name: input.value.trim(), availability: 100.0 });
+                    }
+                });
+                plantDataWithAvailability[sectionKey].subsections[subKey] = newComponentList;
+                
+                plantDataWithAvailability[sectionKey].allComponents = [];
+                Object.keys(plantDataWithAvailability[sectionKey].subsections).forEach(sKey => {
+                    plantDataWithAvailability[sectionKey].allComponents.push(...plantDataWithAvailability[sectionKey].subsections[sKey]);
+                });
+
+                closeEditModal();
+                populateAllFormDropdowns();
+                refreshAllUI();
+                saveDataToLocalStorage();
+            }
+
+            function addNewComponentToModal() {
+                const name = newComponentName.value.trim();
+                if (name === '') return;
+                const newRow = `
+                    <div class="flex items-center gap-2">
+                        <input type="text" value="${name}" class="edit-component-input flex-grow w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm">
+                        <button class="delete-component-btn bg-red-500 text-white font-bold py-2 px-3 rounded-md hover:bg-red-600">&times;</button>
+                    </div>`;
+                editModalList.insertAdjacentHTML('beforeend', newRow);
+                newComponentName.value = '';
+            }
+
+            // Activity tracking
+            let activityHistory = [];
+
+            // Work Order History Management
+            function addToWOHistory(wo, sectionKey, action = 'created') {
+                const sectionName = plantDataWithAvailability[sectionKey]?.name || 'Unknown Section';
+                const historyEntry = {
+                    id: `${wo.wo}_${Date.now()}`,
+                    woId: wo.wo,
+                    sectionKey,
+                    sectionName,
+                    equipment: wo.eq,
+                    description: wo.desc,
+                    priority: wo.priority,
+                    status: wo.status,
+                    startTime: wo.startTime ? new Date(wo.startTime) : null,
+                    finishTime: wo.finishTime ? new Date(wo.finishTime) : null,
+                    duration: wo.startTime && wo.finishTime ? 
+                        Math.round((new Date(wo.finishTime) - new Date(wo.startTime)) / (1000 * 60)) : null,
+                    performedWork: wo.performedWork || '',
+                    action, // created, updated, completed, deleted
+                    timestamp: new Date(),
+                    isDeleted: false
+                };
+                
+                woHistory.unshift(historyEntry);
+                saveWOHistory();
+                return historyEntry;
+            }
+
+            function updateWOHistory(woId, sectionKey, updates, action = 'updated') {
+                const wo = mockData.workOrders[sectionKey].find(w => w.wo === parseInt(woId));
+                if (!wo) return;
+
+                // Find existing history entry or create new one
+                let historyEntry = woHistory.find(h => h.woId === parseInt(woId) && h.sectionKey === sectionKey && !h.isDeleted);
+                
+                if (historyEntry) {
+                    // Update existing entry
+                    Object.assign(historyEntry, updates);
+                    historyEntry.action = action;
+                    historyEntry.timestamp = new Date();
+                    
+                    // Recalculate duration if both times exist
+                    if (historyEntry.startTime && historyEntry.finishTime) {
+                        historyEntry.duration = Math.round((new Date(historyEntry.finishTime) - new Date(historyEntry.startTime)) / (1000 * 60));
+                    }
+                } else {
+                    // Create new history entry
+                    addToWOHistory(wo, sectionKey, action);
+                }
+                
+                saveWOHistory();
+            }
+
+            function deleteWOFromHistory(woId, sectionKey) {
+                // Mark as deleted in history (for audit trail)
+                const historyEntries = woHistory.filter(h => h.woId === parseInt(woId) && h.sectionKey === sectionKey);
+                historyEntries.forEach(entry => {
+                    entry.isDeleted = true;
+                    entry.action = 'deleted';
+                    entry.timestamp = new Date();
+                });
+
+                // Remove from active work orders
+                const woIndex = mockData.workOrders[sectionKey].findIndex(w => w.wo === parseInt(woId));
+                if (woIndex !== -1) {
+                    const deletedWO = mockData.workOrders[sectionKey].splice(woIndex, 1)[0];
+                    
+                    // Add deletion record to activity
+                    const sectionName = plantDataWithAvailability[sectionKey]?.name || 'Unknown';
+                    addActivity('work-orders', `Work Order #${woId} permanently deleted from ${deletedWO.eq}`, {
+                        woId,
+                        equipment: deletedWO.eq,
+                        section: sectionName,
+                        action: 'deleted'
+                    });
+                }
+
+                saveWOHistory();
+                saveDataToLocalStorage();
+                refreshAllUI();
+            }
+
+            function getWOHistoryFiltered(filters = {}) {
+                let filtered = woHistory.filter(h => !h.isDeleted || filters.includeDeleted);
+                
+                if (filters.status && filters.status !== 'all') {
+                    filtered = filtered.filter(h => h.status === filters.status);
+                }
+                
+                if (filters.section && filters.section !== 'all') {
+                    filtered = filtered.filter(h => h.sectionKey === filters.section);
+                }
+                
+                if (filters.dateFrom) {
+                    const fromDate = new Date(filters.dateFrom);
+                    filtered = filtered.filter(h => new Date(h.timestamp) >= fromDate);
+                }
+                
+                if (filters.dateTo) {
+                    const toDate = new Date(filters.dateTo);
+                    toDate.setHours(23, 59, 59, 999);
+                    filtered = filtered.filter(h => new Date(h.timestamp) <= toDate);
+                }
+                
+                return filtered.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            }
+
+            function saveWOHistory() {
+                localStorage.setItem('woHistory', JSON.stringify(woHistory));
+            }
+
+            function loadWOHistory() {
+                const saved = localStorage.getItem('woHistory');
+                if (saved) {
+                    woHistory = JSON.parse(saved);
+                    // Convert date strings back to Date objects
+                    woHistory.forEach(entry => {
+                        if (entry.startTime) entry.startTime = new Date(entry.startTime);
+                        if (entry.finishTime) entry.finishTime = new Date(entry.finishTime);
+                        entry.timestamp = new Date(entry.timestamp);
+                    });
+                }
+            }
+            
+            function addActivity(type, message, details = {}) {
+                const activity = {
+                    id: Date.now() + Math.random(),
+                    type,
+                    message,
+                    details,
+                    timestamp: new Date(),
+                };
+                activityHistory.unshift(activity);
+                
+                // Keep only last 100 activities
+                if (activityHistory.length > 100) {
+                    activityHistory = activityHistory.slice(0, 100);
+                }
+                
+                updateActivityTimeline();
+                saveActivityHistory();
+            }
+            
+            function updateActivityTimeline() {
+                // Keep the original activity timeline function for backward compatibility
+                const timeline = document.getElementById('activity-timeline');
+                if (timeline) {
+                    const filter = document.getElementById('activity-filter')?.value || 'all';
+                    
+                    let filteredActivities = activityHistory;
+                    if (filter !== 'all') {
+                        filteredActivities = activityHistory.filter(activity => activity.type === filter);
+                    }
+                    
+                    if (filteredActivities.length === 0) {
+                        timeline.innerHTML = `
+                            <div class="text-center text-gray-500 py-4">
+                                <p>No activities found for selected filter</p>
+                            </div>
+                        `;
+                        return;
+                    }
+                    
+                    timeline.innerHTML = filteredActivities.slice(0, 20).map(activity => {
+                        const timeAgo = getTimeAgo(activity.timestamp);
+                        const icon = getActivityIcon(activity.type);
+                        
+                        return `
+                            <div class="flex items-start gap-3 p-3 hover:bg-gray-50 rounded-lg transition-colors">
+                                <div class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-sm">
+                                    ${icon}
+                                </div>
+                                <div class="flex-grow min-w-0">
+                                    <p class="text-sm font-medium text-gray-900">${activity.message}</p>
+                                    <p class="text-xs text-gray-500">${timeAgo}</p>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+                
+                // Update the new WO history timeline
+                updateWOHistoryTimeline();
+            }
+
+            function updateWOHistoryTimeline() {
+                const timeline = document.getElementById('wo-history-timeline');
+                if (!timeline) return;
+
+                const filters = {
+                    status: document.getElementById('history-status-filter')?.value || 'all',
+                    section: document.getElementById('history-section-filter')?.value || 'all',
+                    dateFrom: document.getElementById('history-date-from')?.value || null,
+                    dateTo: document.getElementById('history-date-to')?.value || null,
+                    includeDeleted: document.getElementById('history-status-filter')?.value === 'deleted'
+                };
+
+                let filteredHistory = getWOHistoryFiltered(filters);
+
+                if (filteredHistory.length === 0) {
+                    timeline.innerHTML = `
+                        <div class="text-center text-gray-500 py-8">
+                            <svg class="w-12 h-12 mx-auto mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                            <p>No work orders found matching current filters</p>
+                            <p class="text-sm mt-1">Adjust filters or create new work orders</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                timeline.innerHTML = filteredHistory.slice(0, 50).map(entry => {
+                    const timeAgo = getTimeAgo(entry.timestamp);
+                    const statusColor = getStatusColor(entry.status, entry.isDeleted);
+                    const actionIcon = getActionIcon(entry.action);
+                    const durationText = entry.duration ? `${entry.duration} min` : 'N/A';
+                    
+                    return `
+                        <div class="flex items-start gap-4 p-4 border rounded-lg hover:bg-gray-50 transition-all duration-200 ${entry.isDeleted ? 'opacity-60 border-red-200' : 'border-gray-200'}">
+                            <div class="flex-shrink-0 w-10 h-10 rounded-full ${statusColor.bg} flex items-center justify-center">
+                                ${actionIcon}
+                            </div>
+                            <div class="flex-grow min-w-0">
+                                <div class="flex items-start justify-between">
+                                    <div class="flex-grow">
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <h4 class="font-semibold text-gray-900">WO #${entry.woId}</h4>
+                                            <span class="px-2 py-1 text-xs font-medium rounded-full ${statusColor.badge}">
+                                                ${entry.isDeleted ? 'DELETED' : entry.status}
+                                            </span>
+                                            <span class="px-2 py-1 text-xs bg-gray-100 text-gray-600 rounded-full">
+                                                ${entry.priority}
+                                            </span>
+                                        </div>
+                                        <p class="text-sm text-gray-700 mb-1">
+                                            <strong>${entry.equipment}</strong> - ${entry.sectionName}
+                                        </p>
+                                        <p class="text-sm text-gray-600 mb-2">${entry.description}</p>
+                                        ${entry.performedWork ? `<p class="text-xs text-gray-500 italic">"${entry.performedWork}"</p>` : ''}
+                                    </div>
+                                    <div class="text-right text-xs text-gray-500 ml-4">
+                                        <div>${timeAgo}</div>
+                                        ${entry.startTime ? `<div>Started: ${new Date(entry.startTime).toLocaleString()}</div>` : ''}
+                                        ${entry.finishTime ? `<div>Finished: ${new Date(entry.finishTime).toLocaleString()}</div>` : ''}
+                                        <div class="font-medium">Duration: ${durationText}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            function getStatusColor(status, isDeleted) {
+                if (isDeleted) {
+                    return {
+                        bg: 'bg-red-100',
+                        badge: 'bg-red-100 text-red-800'
+                    };
+                }
+                
+                switch (status) {
+                    case 'New':
+                        return { bg: 'bg-blue-100', badge: 'bg-blue-100 text-blue-800' };
+                    case 'In Progress':
+                        return { bg: 'bg-yellow-100', badge: 'bg-yellow-100 text-yellow-800' };
+                    case 'Done':
+                        return { bg: 'bg-green-100', badge: 'bg-green-100 text-green-800' };
+                    default:
+                        return { bg: 'bg-gray-100', badge: 'bg-gray-100 text-gray-800' };
+                }
+            }
+
+            function getActionIcon(action) {
+                const icons = {
+                    'created': '<svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>',
+                    'updated': '<svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>',
+                    'completed': '<svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>',
+                    'deleted': '<svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>'
+                };
+                return icons[action] || icons['updated'];
+            }
+            
+            function getActivityIcon(type) {
+                const icons = {
+                    'work-orders': '🔧',
+                    'pm': '✅',
+                    'system': '⚙️',
+                    'alert': '🚨',
+                    'success': '✓'
+                };
+                return icons[type] || '📝';
+            }
+            
+            function getTimeAgo(timestamp) {
+                const now = new Date();
+                const diff = now - new Date(timestamp);
+                const minutes = Math.floor(diff / 60000);
+                const hours = Math.floor(minutes / 60);
+                const days = Math.floor(hours / 24);
+                
+                if (minutes < 1) return 'Just now';
+                if (minutes < 60) return `${minutes}m ago`;
+                if (hours < 24) return `${hours}h ago`;
+                return `${days}d ago`;
+            }
+            
+            // Notification system
+            function showNotification(message, type = 'info', duration = 3000) {
+                const notification = document.createElement('div');
+                notification.className = `fixed top-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-sm transform transition-all duration-300 slide-in-right`;
+                
+                const bgColor = {
+                    'success': 'bg-green-500',
+                    'error': 'bg-red-500',
+                    'warning': 'bg-yellow-500',
+                    'info': 'bg-blue-500'
+                }[type] || 'bg-blue-500';
+                
+                const icon = {
+                    'success': '✓',
+                    'error': '✗',
+                    'warning': '⚠',
+                    'info': 'ℹ'
+                }[type] || 'ℹ';
+                
+                notification.className += ` ${bgColor} text-white`;
+                notification.innerHTML = `
+                    <div class="flex items-center">
+                        <span class="mr-2 text-lg">${icon}</span>
+                        <span class="flex-grow">${message}</span>
+                        <button onclick="this.parentElement.parentElement.remove()" class="ml-2 text-white hover:text-gray-200">×</button>
+                    </div>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.style.transform = 'translateX(100%)';
+                    notification.style.opacity = '0';
+                    setTimeout(() => notification.remove(), 300);
+                }, duration);
+            }
+            
+            function saveActivityHistory() {
+                localStorage.setItem('activityHistory', JSON.stringify(activityHistory));
+            }
+            
+            function loadActivityHistory() {
+                const saved = localStorage.getItem('activityHistory');
+                if (saved) {
+                    activityHistory = JSON.parse(saved);
+                    // Convert timestamp strings back to Date objects
+                    activityHistory.forEach(activity => {
+                        activity.timestamp = new Date(activity.timestamp);
+                    });
+                }
+            }
+
+            // --- MASTER REFRESH FUNCTION ---
+            function refreshAllUI() {
+                performance.mark('refresh-start');
+                
+                recalculateAllAvailabilities();
+                Object.keys(plantDataWithAvailability).forEach(key => {
+                    populateAvailabilityGrid(key);
+                    populateWOTable(`${key}-wo-table`, mockData.workOrders[key] || [], key);
+                });
+                populateCriticalWOTable();
+                updateOEE();
+                updatePmComplianceKpi();
+                updateAnalyticsDisplay();
+                updateActivityTimeline();
+                
+                performance.mark('refresh-end');
+                performance.measure('UI Refresh', 'refresh-start', 'refresh-end');
+            }
+            
+            function updateAnalyticsDisplay() {
+                const mttr = calculateMTTR();
+                const mtbf = calculateMTBF();
+                const totalWOs = Object.values(mockData.workOrders).flat().length;
+                const completedWOs = Object.values(mockData.workOrders).flat().filter(wo => wo.status === 'Done').length;
+                const completionRate = totalWOs > 0 ? ((completedWOs / totalWOs) * 100) : 0;
+                
+                const mttrDisplay = document.getElementById('mttr-display');
+                const mtbfDisplay = document.getElementById('mtbf-display');
+                const completionDisplay = document.getElementById('completion-rate-display');
+                
+                if (mttrDisplay) mttrDisplay.textContent = `${mttr.toFixed(1)} min`;
+                if (mtbfDisplay) mtbfDisplay.textContent = `${mtbf.toFixed(1)} min`;
+                if (completionDisplay) completionDisplay.textContent = `${completionRate.toFixed(1)}%`;
+            }
+
+            // --- RENDERING & CALCULATION FUNCTIONS ---
+            function updatePmComplianceKpi() {
+                const pms = mockData.scheduledPMs || [];
+                const totalPMs = pms.length;
+                if (totalPMs === 0) {
+                    document.getElementById('kpi-pm').textContent = '100%';
+                    return;
+                }
+                const completedPMs = pms.filter(pm => pm.status === 'Done').length;
+                const compliance = (completedPMs / totalPMs) * 100;
+                document.getElementById('kpi-pm').textContent = `${compliance.toFixed(0)}%`;
+            }
+
+            function populateAvailabilityGrid(sectionKey) {
+                const gridContainer = document.getElementById(`${sectionKey}-availability-grid`);
+                const subsections = plantDataWithAvailability[sectionKey].subsections;
+                if (!gridContainer || !subsections) return;
+                let gridHTML = '';
+                Object.keys(subsections).forEach(name => {
+                    const components = subsections[name];
+                    const avgAvailability = components.length > 0 ? components.reduce((sum, c) => sum + c.availability, 0) / components.length : 100;
+                    let barColor = 'bg-green-500';
+                    if (avgAvailability < 98 && avgAvailability >= 95) barColor = 'bg-yellow-400';
+                    else if (avgAvailability < 95) barColor = 'bg-red-500';
+                    gridHTML += `<div class="availability-item p-2 rounded-md border">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="text-sm font-medium text-gray-700">${name}</span>
+                            <div>
+                                <span class="text-sm font-bold mr-2">${avgAvailability.toFixed(1)}%</span>
+                                <button onclick="openEditModal('${sectionKey}', '${name}')" class="text-xs bg-gray-200 hover:bg-gray-300 text-gray-600 font-semibold py-1 px-2 rounded">Edit</button>
+                            </div>
+                        </div>
+                        <div class="w-full availability-bar-bg rounded-full h-2.5"><div class="${barColor} h-2.5 rounded-full" style="width: ${avgAvailability}%" onclick="openComponentModal('${sectionKey}', '${name}')"></div></div>
+                    </div>`;
+                });
+                gridContainer.innerHTML = gridHTML;
+            }
+
+            function populateWOTable(tableId, data, sectionKey) {
+                const table = document.getElementById(tableId);
+                if (!table) return;
+                const header = `<thead class="bg-gray-100"><tr><th class="p-3 w-1/12">WO#</th><th class="p-3 w-2/12">Equipment</th><th class="p-3 w-2/12">Description</th><th class="p-3 w-2/12">Work Performed</th><th class="p-3">Start</th><th class="p-3">Finish</th><th class="p-3">Status</th><th class="p-3">Actions</th></tr></thead>`;
+                let body = data.map(wo => {
+                    const statuses = ['New', 'In Progress', 'Done'];
+                    const options = statuses.map(s => `<option value="${s}" ${s === wo.status ? 'selected' : ''}>${s}</option>`).join('');
+                    return `<tr class="border-b hover:bg-gray-50 transition-colors">
+                                <td class="p-3 font-medium">${wo.wo}</td>
+                                <td class="p-3">${wo.eq}</td>
+                                <td class="p-3">${wo.desc}</td>
+                                <td class="p-3"><textarea class="wo-textarea performed-work-input" data-wo-id="${wo.wo}" data-section="${sectionKey}" rows="2">${wo.performedWork}</textarea></td>
+                                <td class="p-3">${wo.startTime ? new Date(wo.startTime).toLocaleTimeString() : '---'}</td>
+                                <td class="p-3">${wo.finishTime ? new Date(wo.finishTime).toLocaleTimeString() : '---'}</td>
+                                <td class="p-3"><select data-wo-id="${wo.wo}" data-section="${sectionKey}" class="status-select bg-white border border-gray-300 rounded-md shadow-sm p-1">${options}</select></td>
+                                <td class="p-3">
+                                    <button onclick="deleteWorkOrder(${wo.wo}, '${sectionKey}')" class="btn bg-red-500 text-white hover:bg-red-600 text-xs px-2 py-1" title="Permanently delete this work order">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                        </svg>
+                                    </button>
+                                </td>
+                            </tr>`;
+                }).join('');
+                if (data.length === 0) body = '<tr><td colspan="8" class="p-4 text-center text-gray-500">No active work orders.</td></tr>';
+                table.innerHTML = header + `<tbody>${body}</tbody>`;
+            }
+
+            // Global function for deleting work orders
+            window.deleteWorkOrder = function(woId, sectionKey) {
+                if (confirm(`Are you sure you want to permanently delete Work Order #${woId}? This action cannot be undone and will remove all associated downtime from OEE calculations.`)) {
+                    deleteWOFromHistory(woId, sectionKey);
+                    showNotification(`Work Order #${woId} permanently deleted`, 'success');
+                }
+            };
+            
+            function populateCriticalWOTable() {
+                const allWOs = Object.values(mockData.workOrders).flat();
+                const criticalWOs = allWOs.filter(wo => (wo.priority === 'High' || wo.priority === 'Emergency') && wo.status !== 'Done');
+                const tableBody = document.getElementById('critical-wo-table');
+                const criticalCount = document.getElementById('critical-wo-count');
+                
+                tableBody.innerHTML = criticalWOs.map(wo => {
+                     const sectionKey = Object.keys(mockData.workOrders).find(key => mockData.workOrders[key].includes(wo));
+                     const sectionName = sectionKey ? plantDataWithAvailability[sectionKey].name : 'Unknown';
+                     const priorityClass = wo.priority === 'Emergency' ? 'bg-red-500' : 'bg-orange-500';
+                     const statusClass = wo.status === 'In Progress' ? 'text-blue-600 font-medium' : 'text-gray-600';
+                     
+                     return `<tr class="border-b hover:bg-gray-50 transition-colors">
+                                <td class="p-2 font-medium text-sm">${wo.wo}</td>
+                                <td class="p-2">
+                                    <span class="px-2 py-1 text-xs font-semibold text-white ${priorityClass} rounded-full">
+                                        ${wo.priority}
+                                    </span>
+                                </td>
+                                <td class="p-2 text-sm">${wo.eq}</td>
+                                <td class="p-2 text-sm">${sectionName}</td>
+                                <td class="p-2 text-sm ${statusClass}">${wo.status}</td>
+                            </tr>`
+                }).join('');
+                
+                if(criticalWOs.length === 0) {
+                    tableBody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-gray-500 text-sm">No active critical work orders.</td></tr>';
+                }
+                
+                // Update counters
+                document.getElementById('critical-wo-kpi').textContent = criticalWOs.length;
+                if (criticalCount) criticalCount.textContent = criticalWOs.length;
+                
+                // Update pulse animation based on critical WOs
+                const criticalKpi = document.getElementById('critical-wo-kpi');
+                if (criticalWOs.length > 0) {
+                    criticalKpi.classList.add('pulse-animation');
+                } else {
+                    criticalKpi.classList.remove('pulse-animation');
+                }
+            }
+
+            function populateAllFormDropdowns() {
+                Object.keys(plantDataWithAvailability).forEach(key => {
+                    const select = document.getElementById(`${key}-eq`);
+                    if (!select) return;
+                    select.innerHTML = '<option value="">Select a component...</option>';
+                    const components = plantDataWithAvailability[key].allComponents;
+                    components.forEach(comp => {
+                        const option = document.createElement('option');
+                        option.value = comp.name;
+                        option.textContent = comp.name;
+                        select.appendChild(option);
+                    });
+                });
+            }
+
+            function recalculateAllAvailabilities() {
+                // Only use work orders that haven't been deleted
+                const allWOs = Object.values(mockData.workOrders).flat();
+                const now = new Date(); // Use a consistent 'now' for the entire calculation cycle
+
+                Object.keys(plantDataWithAvailability).forEach(sectionKey => {
+                    Object.keys(plantDataWithAvailability[sectionKey].subsections).forEach(subKey => {
+                        const components = plantDataWithAvailability[sectionKey].subsections[subKey];
+                        components.forEach(component => {
+                            let componentDowntime = 0;
+                            // Find all active work orders for this component that have been started
+                            const relevantWOs = allWOs.filter(wo => wo.eq === component.name && wo.startTime);
+
+                            relevantWOs.forEach(wo => {
+                                const startTime = new Date(wo.startTime);
+                                let endTime;
+
+                                if (wo.status === 'Done' && wo.finishTime) {
+                                    // If WO is done, use the finish time
+                                    endTime = new Date(wo.finishTime);
+                                } else if (wo.status === 'In Progress') {
+                                    // If WO is in progress, calculate downtime up to the current moment
+                                    endTime = now;
+                                }
+
+                                // Only add to downtime if we have a valid start and end time
+                                if (endTime) {
+                                    componentDowntime += (endTime - startTime) / (1000 * 60); // Downtime in minutes
+                                }
+                            });
+                            
+                            const cappedDowntime = Math.min(componentDowntime, dailyRunningMinutes);
+                            const availability = ((dailyRunningMinutes - cappedDowntime) / dailyRunningMinutes) * 100;
+                            component.availability = Math.max(0, availability);
+                        });
+                    });
+                });
+            }
+
+            function updateOEE() {
+                let totalDowntimeMinutes = 0;
+                // Only use active work orders (not deleted ones)
+                const allWOs = Object.values(mockData.workOrders).flat();
+                const now = new Date();
+                
+                allWOs.forEach(wo => {
+                    if (wo.startTime) {
+                        const startTime = new Date(wo.startTime);
+                        let endTime;
+                        if(wo.status === 'Done' && wo.finishTime) {
+                            endTime = new Date(wo.finishTime);
+                        } else if (wo.status === 'In Progress') {
+                            endTime = now;
+                        }
+                        
+                        if (endTime) {
+                            totalDowntimeMinutes += (endTime - startTime) / (1000 * 60);
+                        }
+                    }
+                });
+
+                const cappedTotalDowntime = Math.min(totalDowntimeMinutes, dailyRunningMinutes);
+                const runTime = dailyRunningMinutes - cappedTotalDowntime;
+                const availability = runTime / dailyRunningMinutes;
+                const finalAvailability = Math.max(0, availability);
+                const oeeScore = finalAvailability * OEE_PERFORMANCE * OEE_QUALITY;
+                document.getElementById('kpi-oee').textContent = `${(oeeScore * 100).toFixed(1)}%`;
+            }
+            
+            // --- DATA PERSISTENCE & UTILITIES ---
+            function resetData() {
+                if (confirm("Are you sure you want to reset all data? This will clear all work orders and reset availability to 100%.")) {
+                    initializeAndResetData();
+                    populateAllFormDropdowns();
+                    refreshAllUI();
+                    saveDataToLocalStorage();
+                    alert("Dashboard data has been reset.");
+                }
+            }
+
+            function saveDataToLocalStorage() {
+                const dataToSave = { mockData, plantDataWithAvailability, dailyRunningMinutes };
+                localStorage.setItem('dashboardData', JSON.stringify(dataToSave));
+            }
+
+            function loadDataFromLocalStorage() {
+                const savedData = localStorage.getItem('dashboardData');
+                if (savedData) {
+                    const parsedData = JSON.parse(savedData);
+                    mockData = parsedData.mockData;
+                    
+                    // FIX: Ensure scheduledPMs exists and is populated if it's missing from old saved data
+                    if (!mockData.scheduledPMs || mockData.scheduledPMs.length === 0) {
+                        mockData.scheduledPMs = getDefaultPMs();
+                    }
+
+                    Object.keys(mockData.workOrders).forEach(sectionKey => {
+                       if (mockData.workOrders[sectionKey]) {
+                            mockData.workOrders[sectionKey].forEach(wo => {
+                                if(wo.startTime) wo.startTime = new Date(wo.startTime);
+                                if(wo.finishTime) wo.finishTime = new Date(wo.finishTime);
+                            });
+                       }
+                    });
+
+                    plantDataWithAvailability = parsedData.plantDataWithAvailability;
+                    dailyRunningMinutes = parsedData.dailyRunningMinutes || 720;
+                    document.getElementById('running-hours').value = dailyRunningMinutes / 60;
+                    return true;
+                }
+                return false;
+            }
+
+            function exportToCSV() {
+                const allWOs = [];
+                Object.keys(mockData.workOrders).forEach(sectionKey => {
+                    const sectionName = plantDataWithAvailability[sectionKey].name;
+                    mockData.workOrders[sectionKey].forEach(wo => {
+                        allWOs.push({
+                            section: sectionName,
+                            wo: wo.wo,
+                            priority: wo.priority,
+                            equipment: wo.eq,
+                            description: wo.desc,
+                            status: wo.status,
+                            startTime: wo.startTime ? new Date(wo.startTime).toLocaleString() : 'N/A',
+                            finishTime: wo.finishTime ? new Date(wo.finishTime).toLocaleString() : 'N/A',
+                            performedWork: wo.performedWork
+                        });
+                    });
+                });
+
+                if (allWOs.length === 0) {
+                    alert('No work orders to export.');
+                    return;
+                }
+
+                const headers = ['Section', 'WO #', 'Priority', 'Equipment', 'Description', 'Status', 'Start Time', 'Finish Time', 'Work Performed'];
+                
+                const sanitizeCell = (cell) => {
+                    let cellStr = String(cell).replace(/"/g, '""');
+                    if (cellStr.includes(',') || cellStr.includes('\n') || cellStr.includes('"')) {
+                        cellStr = `"${cellStr}"`;
+                    }
+                    return cellStr;
+                };
+
+                let csvString = headers.join(',') + '\n';
+                allWOs.forEach(row => {
+                    const rowData = [
+                        row.section, row.wo, row.priority, row.equipment, row.description,
+                        row.status, row.startTime, row.finishTime, row.performedWork
+                    ];
+                    csvString += rowData.map(sanitizeCell).join(',') + '\n';
+                });
+
+                const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement("a");
+                link.setAttribute("href", url);
+                link.setAttribute("download", "mex_site_work_orders.csv");
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+            }
+
+            function importFromCSV(event) { alert('Import functionality is not yet enabled.'); }
+
+            // Enhanced Analytics Functions
+            function calculateMTTR() {
+                const allWOs = Object.values(mockData.workOrders).flat();
+                const completedWOs = allWOs.filter(wo => wo.status === 'Done' && wo.startTime && wo.finishTime);
+                
+                if (completedWOs.length === 0) return 0;
+                
+                const totalRepairTime = completedWOs.reduce((sum, wo) => {
+                    const repairTime = (new Date(wo.finishTime) - new Date(wo.startTime)) / (1000 * 60); // minutes
+                    return sum + repairTime;
+                }, 0);
+                
+                return totalRepairTime / completedWOs.length; // Average repair time in minutes
+            }
+
+            function calculateMTBF() {
+                const allWOs = Object.values(mockData.workOrders).flat();
+                const totalComponents = Object.values(plantDataWithAvailability).reduce((sum, section) => {
+                    return sum + section.allComponents.length;
+                }, 0);
+                
+                if (totalComponents === 0 || allWOs.length === 0) return 0;
+                
+                // Simplified MTBF calculation: running time / number of failures
+                return dailyRunningMinutes / allWOs.length;
+            }
+
+            function getTopFailingComponents(limit = 5) {
+                const componentFailures = {};
+                const allWOs = Object.values(mockData.workOrders).flat();
+                
+                allWOs.forEach(wo => {
+                    componentFailures[wo.eq] = (componentFailures[wo.eq] || 0) + 1;
+                });
+                
+                return Object.entries(componentFailures)
+                    .sort(([,a], [,b]) => b - a)
+                    .slice(0, limit)
+                    .map(([component, count]) => ({ component, count }));
+            }
+
+            function generateReport() {
+                // Create a new window with proper features to avoid popup blockers
+                const reportWindow = window.open('', '_blank', 'width=1200,height=800,scrollbars=yes');
+                if (!reportWindow) {
+                    showNotification('Please allow popups for this site to generate reports', 'error');
+                    return;
+                }
+                
+                const mttr = calculateMTTR();
+                const mtbf = calculateMTBF();
+                const topFailures = getTopFailingComponents();
+                const totalWOs = Object.values(mockData.workOrders).flat().length;
+                const completedWOs = Object.values(mockData.workOrders).flat().filter(wo => wo.status === 'Done').length;
+                
+                let html = `
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <title>MEX SITE - Operations & Asset Health Report</title>
+                        <style>
+                            body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; line-height: 1.6; color: #333; margin: 2rem; }
+                            h1, h2, h3 { color: #1a202c; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; margin-top: 2rem; }
+                            h1 { font-size: 2.25rem; }
+                            h2 { font-size: 1.75rem; }
+                            h3 { font-size: 1.25rem; border-bottom: 1px solid #e2e8f0; }
+                            table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+                            th, td { border: 1px solid #cbd5e0; padding: 0.75rem; text-align: left; }
+                            th { background-color: #f7fafc; font-weight: 600; }
+                            tr:nth-child(even) { background-color: #f7fafc; }
+                            .kpi-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; text-align: center; margin: 2rem 0; }
+                            .kpi-item { background-color: #f7fafc; padding: 1.5rem; border-radius: 0.5rem; border: 1px solid #e2e8f0; }
+                            .kpi-title { font-size: 1rem; color: #718096; }
+                            .kpi-value { font-size: 2.5rem; font-weight: 700; color: #2d3748; }
+                            .analytics-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin: 2rem 0; }
+                            .analytics-item { background-color: #f0f9ff; padding: 1.5rem; border-radius: 0.5rem; border-left: 4px solid #3b82f6; }
+                            .availability-section { margin-top: 1rem; }
+                            .availability-item { display: flex; justify-content: space-between; padding: 0.5rem; border-bottom: 1px solid #e2e8f0; }
+                            .availability-item span:first-child { font-weight: 500; }
+                            .summary-box { background-color: #fef3c7; padding: 1.5rem; border-radius: 0.5rem; margin: 1rem 0; border-left: 4px solid #f59e0b; }
+                            @media print { body { margin: 0; font-size: 12px; } h1, h2, h3 { margin-top: 1.5rem; } .no-print { display: none; } }
+                        </style>
+                    </head>
+                    <body>
+                        <h1>🏭 MEX SITE - Operations & Asset Health Report</h1>
+                        <div class="summary-box">
+                            <strong>Report Generated:</strong> ${new Date().toLocaleString()}<br>
+                            <strong>Reporting Period:</strong> Current operational status<br>
+                            <strong>Total Work Orders:</strong> ${totalWOs} (${completedWOs} completed)
+                        </div>
+                        
+                        <h2>📊 Key Performance Indicators</h2>
+                        <div class="kpi-container">
+                            <div class="kpi-item"><div class="kpi-title">OEE</div><div class="kpi-value">${document.getElementById('kpi-oee').textContent}</div></div>
+                            <div class="kpi-item"><div class="kpi-title">Critical Work Orders</div><div class="kpi-value">${document.getElementById('critical-wo-kpi').textContent}</div></div>
+                            <div class="kpi-item"><div class="kpi-title">PM Compliance</div><div class="kpi-value">${document.getElementById('kpi-pm').textContent}</div></div>
+                            <div class="kpi-item"><div class="kpi-title">Days Since LTI</div><div class="kpi-value">${document.getElementById('kpi-lti').textContent}</div></div>
+                        </div>
+
+                        <h2>🔧 Advanced Analytics</h2>
+                        <div class="analytics-container">
+                            <div class="analytics-item">
+                                <h4>Mean Time To Repair (MTTR)</h4>
+                                <p style="font-size: 1.5rem; font-weight: bold; color: #3b82f6;">${mttr.toFixed(1)} minutes</p>
+                                <p style="font-size: 0.9rem; color: #6b7280;">Average repair time per work order</p>
+                            </div>
+                            <div class="analytics-item">
+                                <h4>Mean Time Between Failures (MTBF)</h4>
+                                <p style="font-size: 1.5rem; font-weight: bold; color: #3b82f6;">${mtbf.toFixed(1)} minutes</p>
+                                <p style="font-size: 0.9rem; color: #6b7280;">Average operational time between failures</p>
+                            </div>
+                            <div class="analytics-item">
+                                <h4>Work Order Completion Rate</h4>
+                                <p style="font-size: 1.5rem; font-weight: bold; color: #3b82f6;">${totalWOs > 0 ? ((completedWOs / totalWOs) * 100).toFixed(1) : 0}%</p>
+                                <p style="font-size: 0.9rem; color: #6b7280;">${completedWOs} of ${totalWOs} work orders completed</p>
+                            </div>
+                        </div>
+
+                        ${topFailures.length > 0 ? `
+                        <h2>⚠️ Top Failing Components</h2>
+                        <table>
+                            <thead>
+                                <tr><th>Component</th><th>Failure Count</th><th>Percentage of Total</th></tr>
+                            </thead>
+                            <tbody>
+                                ${topFailures.map(item => `
+                                    <tr>
+                                        <td>${item.component}</td>
+                                        <td>${item.count}</td>
+                                        <td>${((item.count / totalWOs) * 100).toFixed(1)}%</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                        ` : ''}
+                        
+                        <h2>🏗️ System Availability</h2>`;
+                
+                Object.keys(plantDataWithAvailability).forEach(sectionKey => {
+                    const section = plantDataWithAvailability[sectionKey];
+                    html += `<h3>${section.name}</h3><div class="availability-section">`;
+                    Object.keys(section.subsections).forEach(subKey => {
+                        const components = section.subsections[subKey];
+                        const avgAvailability = components.length > 0 ? components.reduce((sum, c) => sum + c.availability, 0) / components.length : 100;
+                        html += `<div class="availability-item"><span>${subKey}</span><span>${avgAvailability.toFixed(2)}%</span></div>`;
+                    });
+                    html += `</div>`;
+                });
+
+                const allWOsForReport = Object.values(mockData.workOrders).flat();
+                const activeWOs = allWOsForReport.filter(wo => wo.status !== 'Done');
+                const completedWOsForReport = allWOsForReport.filter(wo => wo.status === 'Done');
+                const createWOTable = (wos, title) => {
+                    let tableHtml = `<h2>${title}</h2>`;
+                    if (wos.length === 0) { return tableHtml + '<p>No work orders to display.</p>'; }
+                    tableHtml += `<table><thead><tr><th>WO#</th><th>Priority</th><th>Equipment</th><th>Description</th><th>Start Time</th><th>Status</th></tr></thead><tbody>`;
+                    wos.forEach(wo => {
+                        tableHtml += `<tr><td>${wo.wo}</td><td>${wo.priority}</td><td>${wo.eq}</td><td>${wo.desc}</td><td>${wo.startTime ? new Date(wo.startTime).toLocaleString() : 'N/A'}</td><td>${wo.status}</td></tr>`;
+                    });
+                    tableHtml += '</tbody></table>';
+                    return tableHtml;
+                };
+                html += createWOTable(activeWOs, 'Active Work Orders');
+                html += createWOTable(completedWOsForReport, 'Completed Work Orders');
+                html += `</body></html>`;
+                reportWindow.document.write(html);
+                reportWindow.document.close();
+                reportWindow.focus();
+            }
+
+            // --- INITIALIZATION SEQUENCE ---
+            Object.keys(plantStructure).forEach(key => createSectionHTML(key, plantStructure[key].name));
+            
+            navButtons = document.querySelectorAll('.nav-btn');
+            componentModal = document.getElementById('component-modal');
+            modalTitle = document.getElementById('modal-title');
+            modalComponentList = document.getElementById('modal-component-list');
+            editModal = document.getElementById('edit-components-modal');
+            editModalTitle = document.getElementById('edit-modal-title');
+            editModalList = document.getElementById('edit-modal-list');
+            newComponentName = document.getElementById('new-component-name');
+            addComponentBtn = document.getElementById('add-component-btn');
+            saveComponentsBtn = document.getElementById('save-components-btn');
+            pmModal = document.getElementById('pm-modal');
+            themeToggle = document.getElementById('theme-toggle');
+
+            // Initialize theme
+            initializeTheme();
+
+            if (!loadDataFromLocalStorage()) {
+                initializeAndResetData();
+            }
+            
+            // Load activity history and WO history
+            loadActivityHistory();
+            loadWOHistory();
+            
+            populateAllFormDropdowns();
+            refreshAllUI();
+            
+            // Add loading animation
+            document.body.classList.add('fade-in');
+            
+            // Add system startup activity
+            addActivity('system', 'MEX SITE dashboard initialized', {
+                timestamp: new Date(),
+                version: '2.0.0'
+            });
+            
+            // Event Listeners
+            navButtons.forEach(button => button.addEventListener('click', () => switchView(button.dataset.target)));
+            document.body.addEventListener('change', function(e) {
+                if (e.target.classList.contains('status-select')) {
+                    const woId = e.target.dataset.woId;
+                    const sectionKey = e.target.dataset.section;
+                    const newStatus = e.target.value;
+                    updateWorkOrderStatus(woId, newStatus, sectionKey);
+                }
+            });
+            document.body.addEventListener('input', function(e) {
+                if (e.target.classList.contains('performed-work-input')) {
+                    const woId = e.target.dataset.woId;
+                    const sectionKey = e.target.dataset.section;
+                    const text = e.target.value;
+                    updatePerformedWork(woId, sectionKey, text);
+                }
+            });
+            editModalList.addEventListener('click', function (e) {
+                if(e.target.classList.contains('delete-component-btn')) { e.target.parentElement.remove(); }
+            });
+            addComponentBtn.addEventListener('click', addNewComponentToModal);
+            saveComponentsBtn.addEventListener('click', saveComponentChanges);
+            document.getElementById('running-hours').addEventListener('change', function(e) {
+                const hours = parseFloat(e.target.value);
+                if (hours > 0 && hours <= 24) {
+                    dailyRunningMinutes = hours * 60;
+                    refreshAllUI();
+                    saveDataToLocalStorage();
+                }
+            });
+            Object.keys(plantStructure).forEach(key => {
+                document.getElementById(`${key}-form`).addEventListener('submit', (e) => handleFormSubmit(e, key));
+            });
+            document.getElementById('reset-data-btn').addEventListener('click', resetData);
+            document.getElementById('export-csv-btn').addEventListener('click', exportToCSV);
+            document.getElementById('import-csv-btn').addEventListener('click', () => document.getElementById('csv-file-input').click());
+            document.getElementById('csv-file-input').addEventListener('change', importFromCSV);
+            document.getElementById('generate-report-btn').addEventListener('click', generateReport);
+            document.getElementById('manage-pm-btn').addEventListener('click', openPmModal);
+            document.getElementById('save-pm-btn').addEventListener('click', savePmStatus);
+            
+            // New feature event listeners
+            const refreshAnalyticsBtn = document.getElementById('refresh-analytics');
+            if (refreshAnalyticsBtn) {
+                refreshAnalyticsBtn.addEventListener('click', () => {
+                    updateAnalyticsDisplay();
+                    showNotification('Analytics refreshed', 'success', 2000);
+                });
+            }
+            
+            const activityFilter = document.getElementById('activity-filter');
+            if (activityFilter) {
+                activityFilter.addEventListener('change', updateActivityTimeline);
+            }
+            
+            const clearHistoryBtn = document.getElementById('clear-history');
+            if (clearHistoryBtn) {
+                clearHistoryBtn.addEventListener('click', () => {
+                    if (confirm('Are you sure you want to clear the activity history?')) {
+                        activityHistory = [];
+                        saveActivityHistory();
+                        updateActivityTimeline();
+                        showNotification('Activity history cleared', 'success');
+                    }
+                });
+            }
+
+            // Work Order History event listeners
+            const historyStatusFilter = document.getElementById('history-status-filter');
+            const historySectionFilter = document.getElementById('history-section-filter');
+            const historyDateFrom = document.getElementById('history-date-from');
+            const historyDateTo = document.getElementById('history-date-to');
+            const exportHistoryBtn = document.getElementById('export-history');
+
+            if (historyStatusFilter) {
+                historyStatusFilter.addEventListener('change', updateWOHistoryTimeline);
+            }
+            if (historySectionFilter) {
+                historySectionFilter.addEventListener('change', updateWOHistoryTimeline);
+            }
+            if (historyDateFrom) {
+                historyDateFrom.addEventListener('change', updateWOHistoryTimeline);
+            }
+            if (historyDateTo) {
+                historyDateTo.addEventListener('change', updateWOHistoryTimeline);
+            }
+            if (exportHistoryBtn) {
+                exportHistoryBtn.addEventListener('click', exportWOHistory);
+            }
+
+            // Export Work Order History function
+            function exportWOHistory() {
+                const filters = {
+                    status: document.getElementById('history-status-filter')?.value || 'all',
+                    section: document.getElementById('history-section-filter')?.value || 'all',
+                    dateFrom: document.getElementById('history-date-from')?.value || null,
+                    dateTo: document.getElementById('history-date-to')?.value || null,
+                    includeDeleted: document.getElementById('history-status-filter')?.value === 'deleted'
+                };
+
+                const filteredHistory = getWOHistoryFiltered(filters);
+
+                if (filteredHistory.length === 0) {
+                    showNotification('No work order history to export', 'warning');
+                    return;
+                }
+
+                const headers = ['WO ID', 'Section', 'Equipment', 'Description', 'Priority', 'Status', 'Action', 'Start Time', 'Finish Time', 'Duration (min)', 'Work Performed', 'Timestamp'];
+                
+                const csvData = filteredHistory.map(entry => [
+                    entry.woId,
+                    entry.sectionName,
+                    entry.equipment,
+                    entry.description,
+                    entry.priority,
+                    entry.isDeleted ? 'DELETED' : entry.status,
+                    entry.action,
+                    entry.startTime ? new Date(entry.startTime).toLocaleString() : '',
+                    entry.finishTime ? new Date(entry.finishTime).toLocaleString() : '',
+                    entry.duration || '',
+                    entry.performedWork || '',
+                    new Date(entry.timestamp).toLocaleString()
+                ]);
+
+                const csvContent = [headers, ...csvData].map(row => 
+                    row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(',')
+                ).join('\n');
+
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.setAttribute('href', url);
+                link.setAttribute('download', `wo_history_${new Date().toISOString().split('T')[0]}.csv`);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+
+                showNotification(`Exported ${filteredHistory.length} work order records`, 'success');
+            }
+            
+            // Theme toggle event listeners are now set up in initializeTheme()
+            
+            // System theme change detection
+            if (window.matchMedia) {
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                    if (!localStorage.getItem('theme')) {
+                        currentTheme = e.matches ? 'dark' : 'light';
+                        document.body.setAttribute('data-theme', currentTheme);
+                        themeToggle.classList.toggle('active', e.matches);
+                        updateThemeElements();
+                    }
+                });
+            }
+            
+            // Enhanced keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                // Alt + T for theme toggle
+                if (e.altKey && e.key.toLowerCase() === 't') {
+                    e.preventDefault();
+                    toggleTheme();
+                }
+                
+                // Alt + Number keys for quick navigation
+                if (e.altKey && e.key >= '1' && e.key <= '8') {
+                    e.preventDefault();
+                    const navIndex = parseInt(e.key) - 1;
+                    const navButton = navButtons[navIndex];
+                    if (navButton) {
+                        switchView(navButton.dataset.target);
+                    }
+                }
+            });
+            
+            // Periodically refresh the UI to update times for 'In Progress' WOs
+            setInterval(refreshAllUI, 30000); // Refresh every 30 seconds
+            
+            // Add performance monitoring
+            const performanceObserver = new PerformanceObserver((list) => {
+                for (const entry of list.getEntries()) {
+                    if (entry.entryType === 'measure') {
+                        console.log(`Performance: ${entry.name} took ${entry.duration.toFixed(2)}ms`);
+                    }
+                }
+            });
+            
+            if (typeof PerformanceObserver !== 'undefined') {
+                performanceObserver.observe({ entryTypes: ['measure'] });
+            }
+
+            switchView('overview');
+            
+        });
+    </script>
+    </div>
+</body>
+</html>
